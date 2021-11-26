@@ -52,12 +52,12 @@ class OrderDetailsTest {
 
 	@BeforeEach
 	void setUp() throws Exception {
-		mobile1 = new Mobile(1, "Samsung", "Poco M2 pro", 26000);
-		mobile2 = new Mobile(2, "Xiaomi", "Poco M2", 16000);
+		mobile1 = new Mobile(1, "Xiaomi", "Poco M2 pro", 26000);
+		mobile2 = new Mobile(2, "Samsung", "Poco M2", 16000);
 		mobile3 = new Mobile(3, "realme", "Galaxy M20", 32000);
-		mobile4 = new Mobile(4, "Xiaomi", "OPPO A31", 10000);
+		mobile4 = new Mobile(4, "Samsung", "OPPO A31", 10000);
 		mobile5 = new Mobile(5, "Xiaomi", "Redmi 10 Prime", 10000);
-		mobile6 = new Mobile(6, "Samsung", "Galaxy F12", 53000);
+		mobile6 = new Mobile(6, "Xiaomi", "Galaxy F12", 53000);
 		orderDetails = new OrderDetails();
 		orderDetails.setMobileService(mobileService);
 		List<Mobile> mobileData = Arrays.asList(mobile1, mobile2, mobile3, mobile4, mobile5, mobile6);
@@ -68,10 +68,11 @@ class OrderDetailsTest {
 	}
 
 	@Test
+	@DisplayName("check with valid list")
 	void testShowMobiles() throws MobileNotFoundException {
 		String brand = "Samsung";
 		List<Mobile> expectedMobiles = Arrays.asList(mobile1, mobile6);
-//		use the proxy object to call the method of IMobileService with when then
+
 		Mockito.when(mobileService.getByBrand("Samsung")).thenReturn(Arrays.asList(mobile1, mobile6));
 		List<Mobile> actualMobileList = orderDetails.showMobiles(brand);
 		assertEquals(expectedMobiles.toString(), actualMobileList.toString(), "List not equal");
@@ -79,12 +80,14 @@ class OrderDetailsTest {
 	}
 
 	@Test
+	@DisplayName("check with not avilable mobiles")
 	void testshowMobilesInvalid() throws MobileNotFoundException {
 		Mockito.when(mobileService.getByBrand("vivo")).thenThrow(MobileNotFoundException.class);
 		assertThrows(MobileNotFoundException.class, () -> orderDetails.showMobiles("vivo"));
 	}
 
 	@Test
+	@DisplayName("check with null list")
 	void testShowMobilesNull() throws MobileNotFoundException {
 		String brand = "Samsung";
 
@@ -96,6 +99,7 @@ class OrderDetailsTest {
 	}
 
 	@Test
+	@DisplayName("check with empty mobile list")
 	void testShowMobilesEmpty() throws MobileNotFoundException {
 		String brand = "Moto";
 
@@ -107,6 +111,7 @@ class OrderDetailsTest {
 	}
 
 	@Test
+	@DisplayName("check to have the mobiles in brand sort")
 	void testShowMobilesSortByBrand() throws MobileNotFoundException {
 		String brand = "Samsung";
 		List<Mobile> expectedMobiles = Arrays.asList(mobile1, mobile6);
@@ -120,6 +125,7 @@ class OrderDetailsTest {
 
 	
 	@Test
+	@DisplayName("check with valid mobile id")
 	void testOrderMobile() throws MobileNotFoundException {
 		int id = 1;
 		String expectedMobile = "mobile ordered";
@@ -131,6 +137,7 @@ class OrderDetailsTest {
 	}
 	
 	@Test
+	@DisplayName("check with invalid id")
 	void testOrderInvalid() throws MobileNotFoundException {
 		
 		String expectedMobile = "mobile not ordered";
