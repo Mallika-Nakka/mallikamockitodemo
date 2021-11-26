@@ -34,12 +34,11 @@ class OrderDetailsTest {
 
 	@Mock
 	IMobileService mobileService;
-	
+
 //	create an object of orderDetails
 	@InjectMocks
 	OrderDetails orderDetails;
-	
-	
+
 	Mobile mobile1, mobile2, mobile3, mobile4, mobile5, mobile6;
 
 	@BeforeAll
@@ -71,11 +70,11 @@ class OrderDetailsTest {
 	@DisplayName("check with valid list")
 	void testShowMobiles() throws MobileNotFoundException {
 		String brand = "Samsung";
-		List<Mobile> expectedMobiles = Arrays.asList(mobile1, mobile6);
+		List<Mobile> expectedMobiles = Arrays.asList(mobile2, mobile4);
 
-		Mockito.when(mobileService.getByBrand("Samsung")).thenReturn(Arrays.asList(mobile1, mobile6));
+		Mockito.when(mobileService.getByBrand("Samsung")).thenReturn(Arrays.asList(mobile2, mobile4));
 		List<Mobile> actualMobileList = orderDetails.showMobiles(brand);
-		assertEquals(expectedMobiles.toString(), actualMobileList.toString(), "List not equal");
+		assertEquals(expectedMobiles, actualMobileList, "List not equal");
 
 	}
 
@@ -123,54 +122,51 @@ class OrderDetailsTest {
 
 	}
 
-	
 	@Test
 	@DisplayName("check with valid mobile id")
 	void testOrderMobile() throws MobileNotFoundException {
 		int id = 1;
 		String expectedMobile = "mobile ordered";
-		
+
 		Mockito.when(mobileService.getById(1)).thenReturn(mobile1);
 		String actualMobile = orderDetails.orderMobile(id);
 		assertEquals(expectedMobile, actualMobile, "Mobile not same");
 
 	}
-	
+
 	@Test
+
 	@DisplayName("check with invalid id")
 	void testOrderInvalid() throws MobileNotFoundException {
-		
+
 		String expectedMobile = "mobile not ordered";
 		Mockito.when(mobileService.getById(15)).thenReturn(null);
 		String actualMobile = orderDetails.orderMobile(15);
 		assertEquals(expectedMobile, actualMobile, "Mobile not same");
 
 	}
+
 	@Test
 	@DisplayName("check with exception")
 	void testOrderException() throws MobileNotFoundException {
-		
-		String expected="mobile not ordered";
+
+		String expected = "mobile not ordered";
 		Mockito.when(mobileService.getById(15)).thenThrow(MobileNotFoundException.class);
-		String actual=orderDetails.orderMobile(15);
+		String actual = orderDetails.orderMobile(15);
 		assertEquals(expected, actual, "Mobile not same");
 
-		
 	}
+
 	@Test
 	@DisplayName("check with empty object")
 	void testOrderEmpty() throws MobileNotFoundException {
-		
-		String expected="mobile not ordered";
+
+		String expected = "mobile not ordered";
 		Mockito.when(mobileService.getById(15)).thenReturn(new Mobile());
-		String actual=orderDetails.orderMobile(15);
+		String actual = orderDetails.orderMobile(15);
 		System.out.println(actual);
 		assertEquals(expected, actual, "empty object expected");
 
-		
 	}
-	
-	
-	
 
 }

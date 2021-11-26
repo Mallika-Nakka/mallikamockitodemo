@@ -22,7 +22,7 @@ public class OrderDetails {
 		} catch (MobileNotFoundException e) {
 			System.out.println(e.getMessage());
 		}
-		System.out.println(mobile.toString());
+		
 		if (mobile==null || (mobile.getBrand()==null && mobile.getMobileId()==null)) {
 			return "mobile not ordered";
 		}
@@ -42,7 +42,7 @@ public class OrderDetails {
 			throw e;
 		}
 		if(mobileList!=null) 
-		return mobileList.stream().sorted(Comparator.comparing(Mobile::getModel)).collect(Collectors.toList());
+		return mobileList.stream().sorted(Comparator.comparing(Mobile::getBrand)).collect(Collectors.toList());
 		else 
 			return null;
 	}
